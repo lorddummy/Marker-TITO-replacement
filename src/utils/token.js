@@ -24,12 +24,16 @@ function generateShortCode() {
 }
 
 /**
- * Constant-time string comparison to prevent timing attacks.
+ * Constant-time string comparison using HMAC digests.
+ * HMAC-based comparison avoids leaking the lengths of the strings compared,
+ * which is a side-channel that a plain timingSafeEqual early-exit on length would expose.
  */
 function safeCompare(a, b) {
   if (typeof a !== 'string' || typeof b !== 'string') return false;
-  if (a.length !== b.length) return false;
-  return crypto.timingSafeEqual(Buffer.from(a), Buffer.from(b));
+  const key = crypto.randomBytes(32);
+  const ha  = crypto.createHmac('sha256', key).update(a).digest();
+  const hb  = crypto.createHmac('sha256', key).update(b).digest();
+  return crypto.timingSafeEqual(ha, hb);
 }
 
 module.exports = { generateToken, generateShortCode, safeCompare };

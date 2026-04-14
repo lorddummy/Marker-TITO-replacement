@@ -1,0 +1,11 @@
+---
+description: Do not add Cursor branding to git commits
+alwaysApply: true
+---
+
+# Git commits – no Cursor branding
+
+When creating or amending git commits in this project:
+
+- **Never** append "Made-with: Cursor" or any Cursor branding to commit messages.
+- Use only the user-requested or conventional commit message (e.g. "Update README: ..."); do not add trailers, footers, or tags that mention Cursor or the IDE.

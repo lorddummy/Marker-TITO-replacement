@@ -1,0 +1,29 @@
+services:
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - tito-data:/data
+    environment:
+      - PORT=3000
+      - DB_PATH=/data/tito.db
+      - LOG_LEVEL=info
+      - NODE_ENV=production
+      # Set these in a .env file or override at runtime:
+      # API_KEYS=your-secret-key
+      # TICKET_TTL_SECONDS=86400
+      # CORS_ORIGIN=*
+    env_file:
+      - path: ./src/.env
+        required: false
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  tito-data:

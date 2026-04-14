@@ -1,12 +1,12 @@
 {
   "name": "marker-tito-api",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Digital Marker/TITO replacement API — issue, validate, and redeem casino tickets without paper",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "node --test tests/"
+    "test": "node --test tests/tickets.test.js"
   },
   "dependencies": {
     "better-sqlite3": "^9.4.3",
