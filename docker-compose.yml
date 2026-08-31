@@ -1,0 +1,55 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: tito
+      POSTGRES_PASSWORD: tito
+      POSTGRES_DB: tito
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    profiles:
+      - postgres
+
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - tito-data:/data
+    environment:
+      - PORT=3000
+      - DB_PATH=/data/tito.db
+      - LOG_LEVEL=info
+      - NODE_ENV=production
+    env_file:
+      - path: ./src/.env
+        required: false
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  api-postgres:
+    build: .
+    profiles:
+      - postgres
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DATABASE_URL=postgres://tito:tito@postgres:5432/tito
+      - LOG_LEVEL=info
+    depends_on:
+      - postgres
+    env_file:
+      - path: ./src/.env
+        required: false
+
+volumes:
+  tito-data:
+  pg-data:

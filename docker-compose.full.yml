@@ -1,0 +1,32 @@
+# Run Ticket + Account APIs together (clone Account-system as ../Account-system)
+services:
+  tickets:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      API_KEYS: ${TICKET_API_KEYS:-dev-ticket-key}
+      PORT: 3000
+    volumes:
+      - tito-data:/data
+
+  accounts:
+    build: ../Account-system
+    ports:
+      - "3001:3001"
+    environment:
+      API_KEYS: ${ACCOUNT_API_KEYS:-dev-account-key}
+      EGM_KEYS: ${ACCOUNT_EGM_KEYS:-dev-egm-key}
+      CAGE_KEYS: ${ACCOUNT_CAGE_KEYS:-dev-cage-key}
+      ORCHESTRATOR_KEYS: ${ACCOUNT_ORCH_KEYS:-dev-orch-key}
+      TICKET_API_URL: http://tickets:3000
+      TICKET_API_KEY: ${TICKET_API_KEYS:-dev-ticket-key}
+      PORT: 3001
+    volumes:
+      - account-data:/data
+    depends_on:
+      - tickets
+
+volumes:
+  tito-data:
+  account-data:

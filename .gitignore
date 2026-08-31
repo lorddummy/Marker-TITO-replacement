@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Environment / secrets
+.env
+.env.local
+*.pem
+secrets/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Logs / local data
+*.log
+logs/
+data/local/
+src/data/
+*.db
+*.sqlite
+
+# npm lock (keep package-lock.json for reproducible installs)
+# package-lock.json
+
+# Test / coverage
+.coverage
+htmlcov/
+.pytest_cache/
+*.cover
